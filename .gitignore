@@ -1,1 +1,7 @@
 .idea
+
+# terraform
+terraform/.terraform.lock.hcl
+terraform/.terraform
+terraform/backend.tf
+terraform/variables.tf
