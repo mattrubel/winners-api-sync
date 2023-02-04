@@ -62,7 +62,7 @@ def call_get_endpoint(base_url: str, parameter_string: str, call_type: str, api_
             requests_remaining=headers.get('X-Requests-Remaining')
         )
     except Exception:
-        logger.warning("Unable to successfully write header")
+        logger.warning("Unable to successfully write response log")
 
     if status_code == 200:
         content = response.content.decode("UTF-8")
