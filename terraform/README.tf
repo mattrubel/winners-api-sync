@@ -1,7 +1,7 @@
 Add this to readme later:
 
 Steps to configure Terraform:
-1. add variables to terraform/backend.tf file as such:
+1. add terraform/backend.tf file as such:
         ```
         terraform {
           backend "s3" {
@@ -13,7 +13,7 @@ Steps to configure Terraform:
         }
         ```
 
-2. add variables to terraform/variables.tf as such:
+2. add terraform/variables.tf as such:
         ```
         variable "AWS_REGION" {
           default = "us-east-1"
