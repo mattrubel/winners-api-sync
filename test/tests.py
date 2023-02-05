@@ -13,12 +13,19 @@ sys.path.insert(
 class TestUtils(unittest.TestCase):
     def test_build_url_with_api_key(self):
         self.assertEqual(
+            "baseurl?apiKey=apikeyparameterstring",
             utils._build_url_with_api_key(
                 "baseurl",
                 "parameterstring",
-                "apikey"),
-            "baseurl?apiKey=apikeyparameterstring")
+                "apikey"))
 
     def test_get_s3_key(self):
-        self.assertEqual(utils.get_s3_key("sports", "2023-02-04-19-48"),
-                         "raw-data/sports/2023/02/04/1948/sports.json")
+        self.assertEqual(
+            "raw-data/sports/2023/02/04/"
+            "1948-4a412f0e-a9dc-4baa-8616-cb76c4829806.json",
+            utils.get_s3_key(
+                "sports",
+                "2023-02-04-19-48",
+                "4a412f0e-a9dc-4baa-8616-cb76c4829806"
+            )
+        )
