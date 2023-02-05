@@ -1,6 +1,8 @@
 """
 This module contains the object that interfaces with the sports endpoint
 """
+import datetime
+
 import util.utils as utils
 from interface.endpoint import Endpoint
 
@@ -14,7 +16,9 @@ class Sports(Endpoint):
         self.api_key = api_key
         self.base_url = base_url
         self.s3_bucket = s3_bucket
-        self.s3_key = utils.get_s3_key("sports")
+        self.call_type = "sports"
+        self.datetime_string = datetime.datetime.now(tz=pytz.UTC).strftime("%Y-%m-%d-%H-%M")
+        # self.s3_key = utils.get_s3_key("sports")
         self.aws_access_key = aws_access_key
         self.aws_secret_access_key = aws_secret_access_key
 
@@ -32,5 +36,6 @@ class Sports(Endpoint):
         :param payload: payload string
         :return:
         """
+        s3_key = utils.get_s3_key(self.call_type, self.datetime_string)
         byte_stream = bytearray(payload, "UTF-8")
-        utils.export_to_s3(byte_stream, self.s3_bucket, self.s3_key, self.aws_access_key, self.aws_secret_access_key)
+        utils.export_to_s3(byte_stream, self.s3_bucket, s3_key, self.aws_access_key, self.aws_secret_access_key)

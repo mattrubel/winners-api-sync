@@ -1,8 +1,6 @@
-import datetime
 import logging
 
 import boto3
-import pytz
 import requests
 
 logger = logging.getLogger()
@@ -98,12 +96,13 @@ def export_to_s3(byte_stream, s3_bucket, s3_key, aws_access_key, aws_secret_acce
         raise e
 
 
-def get_s3_key(call_type: str) -> str:
+def get_s3_key(call_type: str, datetime_string: str) -> str:
     """
     Given call_type, get s3 key path with date type incorporated
-    :param call_type:
+    :param call_type: type of call
+    :param datetime_string: datetime string
     :return: string with s3 key
     """
-    date_split = datetime.datetime.now(tz=pytz.UTC).strftime("%Y-%m-%d-%H-%M").split("-")
+    date_split = datetime_string.split("-")
     date_structure = '/'.join(date_split[0:3]) + '/' + ''.join(date_split[3:])
     return f"raw-data/{call_type}/{date_structure}/{call_type}.json"
