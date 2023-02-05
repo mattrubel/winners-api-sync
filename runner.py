@@ -10,7 +10,13 @@ S3_SECRET_ACCESS_KEY = os.environ['S3_SECRET_ACCESS_KEY']
 
 
 def main():
-    sports = Sports(API_KEY, BASE_URL, S3_BUCKET, S3_ACCESS_KEY, S3_SECRET_ACCESS_KEY)
+    sports = Sports(
+        API_KEY,
+        BASE_URL,
+        S3_BUCKET,
+        S3_ACCESS_KEY,
+        S3_SECRET_ACCESS_KEY
+    )
     payload = sports.call_endpoint()
     sports.export_to_s3(payload)
 
