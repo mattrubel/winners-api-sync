@@ -7,18 +7,18 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-def _build_url_with_api_key(base_url: str, parameter_string: str, api_key: str) -> str:
+def _build_url_with_api_key(
+        base_url: str,
+        parameter_string: str,
+        api_key: str
+) -> str:
     """
     Get API key from environment variable
     :param base_url:
     :param parameter_string:
-    :return:
+    :return: string of built url
     """
-    # api_key = os.environ.get("API_KEY")
-    # assert api_key is not None, "Missing API_KEY environment variable"
-
     api_string = f"?apiKey={api_key}"
-
     return base_url + api_string + parameter_string
 
 
@@ -33,11 +33,17 @@ def _write_response_log(**kwargs):
     # TODO write log_dict
 
 
-def call_get_endpoint(base_url: str, parameter_string: str, call_type: str, api_key: str) -> str:
+def call_get_endpoint(
+        base_url: str,
+        parameter_string: str,
+        call_type: str,
+        api_key: str
+) -> str:
     """
     Given a base_url and parameter_string, return json string
     :param base_url: base url for requests
-    :param parameter_string: string of parameters needed to be appended to the base_url
+    :param parameter_string: string of parameters
+            needed to be appended to the base_url
     :param call_type: type of call sport, event, odds, etc.
     :param api_key: api_key
     :return: return string containing response content
@@ -69,7 +75,13 @@ def call_get_endpoint(base_url: str, parameter_string: str, call_type: str, api_
         raise RuntimeError(f"Failure on {call_type} call.")
 
 
-def export_to_s3(byte_stream, s3_bucket, s3_key, aws_access_key, aws_secret_access_key):
+def export_to_s3(
+        byte_stream: bytearray,
+        s3_bucket: str,
+        s3_key: str,
+        aws_access_key: str,
+        aws_secret_access_key: str
+):
     """
 
     :param byte_stream:
