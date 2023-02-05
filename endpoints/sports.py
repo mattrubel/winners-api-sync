@@ -53,7 +53,11 @@ class Sports(Endpoint):
         :param payload: payload string
         :return:
         """
-        s3_key = utils.get_s3_key(self.call_type, self.datetime_string, self.run_key)
+        s3_key = utils.get_s3_key(
+            self.call_type,
+            self.datetime_string,
+            self.run_key
+        )
         byte_stream = bytearray(payload, "UTF-8")
         s3.export_to_s3(
             byte_stream,
