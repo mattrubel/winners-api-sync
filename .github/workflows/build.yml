@@ -1,6 +1,6 @@
-name: flake8 Lint
+name: build
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   flake8-lint:
@@ -15,3 +15,10 @@ jobs:
           python-version: "3.11"
       - name: flake8 Lint
         uses: py-actions/flake8@v2
+  terraform-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@main
+      - name: Lint Terraform
+        uses: actionshub/terraform-lint@main
