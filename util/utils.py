@@ -23,16 +23,16 @@ def _build_url_with_api_key(
     return base_url + api_string + parameter_string
 
 
-def _write_response_log(dynamodb_table_name: str, **kwargs):
+def write_to_dynamo(dynamodb_table_name: str, **kwargs):
     """
     log response information storage
     :param dynamodb_table_name: table name to write log to
     :param kwargs:
     :return:
     """
-    log_dict = kwargs
+    content_dict = kwargs
     dynamodb.write_to_dynamodb(
-        log_dict,
+        content_dict,
         dynamodb_table_name,
     )
 
@@ -64,7 +64,7 @@ def call_get_endpoint(
     status_code = response.status_code
 
     try:
-        _write_response_log(
+        write_to_dynamo(
             logging_table_name,
             log_key=run_key,
             call_type=call_type,
