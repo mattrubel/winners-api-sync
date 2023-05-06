@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 import requests
 
@@ -63,17 +64,20 @@ def call_get_endpoint(
 
     status_code = response.status_code
 
+    response_content = str(response.content) if status_code != 200 else None
+
     try:
         write_to_dynamo(
             logging_table_name,
             log_key=run_key,
             call_type=call_type,
-            date=headers.get('Date'),
+            date=datetime.now().isoformat(),
             status_code=status_code,
             base_url=base_url,
             parameter_string=parameter_string,
             requests_used=headers.get('X-Requests-Used'),
-            requests_remaining=headers.get('X-Requests-Remaining')
+            requests_remaining=headers.get('X-Requests-Remaining'),
+            response_content=response_content,
         )
     except Exception as e:
         logger.warning(f"Unable to successfully write response log {e}")

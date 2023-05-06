@@ -50,3 +50,43 @@ resource "aws_dynamodb_table" "winners_sports_table" {
   }
 
 }
+
+resource "aws_dynamodb_table" "winners_games_table" {
+  name         = "winners-games"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "game_key"
+
+  global_secondary_index {
+    hash_key        = "sport_key"
+    range_key       = "game_key"
+    name            = "collect_sport_key_idx"
+    projection_type = "ALL"
+  }
+
+  attribute {
+    name = "game_key"
+    type = "S"
+  }
+
+  attribute {
+    name = "sport_key"
+    type = "S"
+  }
+}
+
+resource "aws_dynamodb_table" "winners_odds_table" {
+  name         = "winners-odds"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "game_key"
+  range_key    = "timestamp"
+
+  attribute {
+    name = "game_key"
+    type = "S"
+  }
+
+  attribute {
+    name = "timestamp"
+    type = "S"
+  }
+}
