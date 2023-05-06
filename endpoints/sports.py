@@ -2,6 +2,7 @@
 This module contains the object that interfaces with the sports endpoint
 """
 import datetime
+import json
 import uuid
 
 import pytz
@@ -20,7 +21,8 @@ class Sports(Endpoint):
             api_key: str,
             base_url: str,
             logging_table_name: str,
-            s3_bucket: str
+            s3_bucket: str,
+            dynamodb_table_name: str
     ):
         super().__init__()
         self.run_key = str(uuid.uuid4())
@@ -31,6 +33,7 @@ class Sports(Endpoint):
         self.call_type = "sports"
         self.datetime_string = datetime.datetime.now(tz=pytz.UTC)\
             .strftime("%Y-%m-%d-%H-%M")
+        self.dynamodb_table_name = dynamodb_table_name
 
     def call_endpoint(self, **kwargs) -> str:
         """
@@ -64,3 +67,17 @@ class Sports(Endpoint):
             self.s3_bucket,
             s3_key
         )
+
+    def write_to_dynamo(self, payload: str):
+        items = json.loads(payload)
+
+        for item in items:
+            utils.write_to_dynamo(
+                self.dynamodb_table_name,
+                sport=item['group'],
+                sport_key=item['key'],
+                title=item['title'],
+                description=item['description'],
+                active=item['active'],
+                has_outrights=item['has_outrights'],
+            )

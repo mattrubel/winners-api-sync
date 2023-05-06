@@ -5,5 +5,11 @@ class Endpoint:
         """
         pass
 
-    def call_endpoint_and_export_to_s3(self, **kwargs):
+    def call_endpoint(self, **kwargs):
+        pass
+
+    def export_to_s3(self, **kwargs):
+        pass
+
+    def write_to_dynamo(self, **kwargs):
         pass

@@ -6,6 +6,7 @@ API_KEY = os.environ['API_KEY']
 BASE_URL = os.environ['BASE_URL']
 LOGGING_TABLE_NAME = os.environ['LOGGING_TABLE_NAME']
 S3_BUCKET = os.environ['S3_BUCKET']
+SPORTS_DYNAMODB_TABLE = os.environ['SPORTS_DYNAMODB_TABLE']
 
 
 def main():
@@ -14,9 +15,11 @@ def main():
         BASE_URL,
         LOGGING_TABLE_NAME,
         S3_BUCKET,
+        SPORTS_DYNAMODB_TABLE
     )
     payload = sports.call_endpoint()
     sports.export_to_s3(payload)
+    sports.write_to_dynamo(payload)
 
 
 if __name__ == '__main__':
