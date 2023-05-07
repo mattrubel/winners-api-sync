@@ -11,7 +11,7 @@ import util.utils as utils
 from interface.endpoint import Endpoint
 
 
-class Odds(Endpoint):
+class GameOdds(Endpoint):
 
     def __init__(
             self,
@@ -29,7 +29,7 @@ class Odds(Endpoint):
         self.base_url = base_url + sport + "/odds/"
         self.logging_table_name = logging_table_name
         self.s3_bucket = s3_bucket
-        self.call_type = "odds"
+        self.call_type = "game-odds"
         self.datetime_string = datetime.datetime.now(tz=pytz.UTC)\
             .strftime("%Y-%m-%d-%H-%M")
         self.games_table_name = games_table_name
@@ -46,7 +46,7 @@ class Odds(Endpoint):
         return utils.call_get_endpoint(
             self.base_url,
             "&regions=us&markets=h2h,spreads,totals",
-            "odds",
+            "game-odds",
             self.api_key,
             self.logging_table_name,
             self.run_key
@@ -59,7 +59,7 @@ class Odds(Endpoint):
         :return:
         """
         s3_key = utils.get_s3_key(
-            self.call_type,
+            self.call_type + "/" + self.sport,
             self.datetime_string,
             self.run_key
         )
@@ -70,5 +70,10 @@ class Odds(Endpoint):
             s3_key
         )
 
-    def write_to_dynamo(self, **kwargs):
+    def write_to_dynamo(self, payload):
+        """
+        Write odds endpoint data to relevant dynamodb tables
+        :param payload: string representation of dict returned from API call
+        :return:
+        """
         pass

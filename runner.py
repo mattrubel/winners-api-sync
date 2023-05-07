@@ -1,6 +1,6 @@
 import os
 
-from endpoints.odds import Odds
+from endpoints.game_odds import GameOdds
 
 API_KEY = os.environ['API_KEY']
 BASE_URL = os.environ['BASE_URL']
@@ -23,7 +23,7 @@ def main():
     # sports.export_to_s3(sports_payload)
     # sports.write_to_dynamo(sports_payload)
 
-    odds = Odds(
+    odds = GameOdds(
         API_KEY,
         BASE_URL,
         LOGGING_TABLE_NAME,
@@ -32,7 +32,7 @@ def main():
         ODDS_DYNAMODB_TABLE,
         'baseball_mlb'
     )
-    
+
     odds_payload = odds.call_endpoint()
     odds.export_to_s3(odds_payload)
 
