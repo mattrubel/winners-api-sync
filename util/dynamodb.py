@@ -45,7 +45,8 @@ def write_to_dynamodb(
 
 def convert_float_to_decimal_in_structures(structure: [iter, dict]):
     """
-    Convert float values in markets structure to Decimal so they can be written to ddb
+    Convert float values in markets structure to Decimal so they can be written
+    to ddb
     :param structure: nested list or dict
     :return: same structure with float values converted to decimals
     """
