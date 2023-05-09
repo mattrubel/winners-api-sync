@@ -78,7 +78,7 @@ resource "aws_dynamodb_table" "winners_odds_table" {
   name         = "winners-odds"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "game_key"
-  range_key    = "timestamp"
+  range_key    = "last_updated"
 
   attribute {
     name = "game_key"
@@ -86,7 +86,11 @@ resource "aws_dynamodb_table" "winners_odds_table" {
   }
 
   attribute {
-    name = "timestamp"
+    name = "last_updated"
     type = "S"
+  }
+
+  lifecycle {
+    prevent_destroy = true
   }
 }

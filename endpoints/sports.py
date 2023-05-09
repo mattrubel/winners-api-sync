@@ -69,6 +69,11 @@ class Sports(Endpoint):
         )
 
     def write_to_dynamo(self, payload: str):
+        """
+        Write sports endpoint data to relevant dynamodb tables
+        :param payload: string representation of dict returned from API call
+        :return:
+        """
         items = json.loads(payload)
 
         for item in items:

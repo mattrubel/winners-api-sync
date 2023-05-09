@@ -2,6 +2,7 @@
 This module contains the object that interfaces with the odds endpoint
 """
 import datetime
+import json
 import uuid
 
 import pytz
@@ -29,7 +30,7 @@ class GameOdds(Endpoint):
         self.base_url = base_url + sport + "/odds/"
         self.logging_table_name = logging_table_name
         self.s3_bucket = s3_bucket
-        self.call_type = "game-odds"
+        self.call_type = "game-odds" + "/" + sport
         self.datetime_string = datetime.datetime.now(tz=pytz.UTC)\
             .strftime("%Y-%m-%d-%H-%M")
         self.games_table_name = games_table_name
@@ -40,7 +41,6 @@ class GameOdds(Endpoint):
         """
         Call endpoint to retrieve sports data
         :param kwargs: not used.
-        :param sport: sport_key
         :return: string of payload
         """
         return utils.call_get_endpoint(
@@ -59,7 +59,7 @@ class GameOdds(Endpoint):
         :return:
         """
         s3_key = utils.get_s3_key(
-            self.call_type + "/" + self.sport,
+            self.call_type,
             self.datetime_string,
             self.run_key
         )
@@ -76,4 +76,27 @@ class GameOdds(Endpoint):
         :param payload: string representation of dict returned from API call
         :return:
         """
-        pass
+        items = json.loads(payload)
+
+        for item in items:
+            game_key = item['id']
+            # write game info
+            utils.write_to_dynamo(
+                self.games_table_name,
+                game_key=game_key,
+                sport_key=item['sport_key'],
+                commence_time=item['commence_time'],
+                home_team=item['home_team'],
+                away_team=item['away_team'],
+            )
+
+            # loop through bookmaker data
+            for book in item['bookmakers']:
+                # write odds information
+                utils.write_to_dynamo(
+                    self.odds_table_name,
+                    game_key=game_key,
+                    last_updated=book['last_update'],
+                    bookmaker_key=book['key'],
+                    markets=book['markets'],
+                )

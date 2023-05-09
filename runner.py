@@ -35,6 +35,7 @@ def main():
 
     odds_payload = odds.call_endpoint()
     odds.export_to_s3(odds_payload)
+    odds.write_to_dynamo(odds_payload)
 
 
 if __name__ == '__main__':
