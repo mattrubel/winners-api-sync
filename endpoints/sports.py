@@ -61,7 +61,7 @@ class Sports(Endpoint):
             self.datetime_string,
             self.run_key
         )
-        byte_stream = bytearray(payload, "UTF-8")
+        byte_stream = payload.encode("UTF-8")
         s3.export_to_s3(
             byte_stream,
             self.s3_bucket,

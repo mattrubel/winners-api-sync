@@ -64,7 +64,10 @@ def call_get_endpoint(
 
     status_code = response.status_code
 
-    response_content = str(response.content) if status_code != 200 else None
+    logger.info(f"Response status code {status_code}")
+    logger.debug("API content:" + str(response.content))
+
+    response_content = str(response.content) if status_code != 200 else ""
 
     try:
         write_to_dynamo(

@@ -1,22 +1,15 @@
 import logging
-import os
 
 import boto3
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-AWS_ACCESS_KEY = os.environ['AWS_ACCESS_KEY']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-
-session = boto3.Session(
-    aws_access_key_id=AWS_ACCESS_KEY,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-)
+session = boto3.Session()
 
 
 def export_to_s3(
-        byte_stream: bytearray,
+        byte_stream: bytes,
         s3_bucket: str,
         s3_key: str
 ):

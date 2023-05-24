@@ -1,13 +1,11 @@
-FROM --platform=linux/amd64 python:3.8-slim-buster as build
-
-WORKDIR /api_sync
+FROM public.ecr.aws/lambda/python:3.9
 
 COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
-COPY runner.py .
-COPY endpoints/. endpoints/.
-COPY interface/. interface/.
-COPY util/. util/.
+COPY lambda_app.py ${LAMBDA_TASK_ROOT}
+COPY endpoints/. ${LAMBDA_TASK_ROOT}/endpoints/.
+COPY interface/. ${LAMBDA_TASK_ROOT}/interface/.
+COPY util/. ${LAMBDA_TASK_ROOT}/util/.
 
-CMD [ "python3", "runner.py"]
+CMD [ "lambda_app.handler"]

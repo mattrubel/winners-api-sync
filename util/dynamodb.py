@@ -1,20 +1,12 @@
 import decimal
 import logging
-import os
 
 import boto3
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-
-AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-
-session = boto3.Session(
-    aws_access_key_id=AWS_ACCESS_KEY,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-)
+session = boto3.Session()
 
 
 def write_to_dynamodb(
@@ -28,6 +20,7 @@ def write_to_dynamodb(
     :return:
     """
     logger.info(f"Writing content to dynamodb table: {table_name}")
+    logger.debug(f"Content: {str(write_content)}")
     try:
         ddb_resource = session.resource("dynamodb")
         table = ddb_resource.Table(table_name)
